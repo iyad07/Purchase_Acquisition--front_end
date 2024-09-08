@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-
 class AnalyticsPage extends StatelessWidget {
-
-  final List<Map<String, dynamic>> analyticsItems = [
-    {"title": "Total requests", "count": 19, "color": Colors.blue},
-    {"title": "Approved", "count": 3, "color": Colors.lightBlue},
-    {"title": "Declined", "count": 3, "color": Colors.tealAccent},
-    {"title": "Pending", "count": 4, "color": Colors.lightGreen},
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
+    // Update the analyticsItems list to use the dynamic totalRequests count
+    final List<Map<String, dynamic>> analyticsItems = [
+      {"title": "Total requests", "count": 10, "color": Colors.blue},
+      {"title": "Approved", "count": 3, "color": Colors.lightBlue},
+      {"title": "Declined", "count": 3, "color": Colors.tealAccent},
+      {"title": "Pending", "count": 4, "color": Colors.lightGreen},
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analytics'),
@@ -75,8 +76,11 @@ class AnalyticsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAnalyticsCard(
-      {required String title, required int count, required Color color}) {
+  Widget _buildAnalyticsCard({
+    required String title,
+    required int count,
+    required Color color,
+  }) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(

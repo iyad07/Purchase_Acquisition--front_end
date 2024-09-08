@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
         "onclick": () {
           Navigator.of(context)
               .push(MaterialPageRoute(
-                builder: (BuildContext context) => RequestsPage(),
+                builder: (BuildContext context) => const RequestsPage(),
               ))
               .then((_) => _updateRequests());
         },

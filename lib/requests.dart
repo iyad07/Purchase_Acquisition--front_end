@@ -4,9 +4,6 @@ final TextEditingController _requestTitle = TextEditingController();
 final TextEditingController _requestDescrip = TextEditingController();
 
 final List<Map<String, String>> recentRequests = [
-  {
-   
-  },
   // Add more recent reports here if needed
 ];
 
