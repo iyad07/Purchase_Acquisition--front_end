@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'user/home.dart';
+import 'admin/home.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,14 +20,26 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter both email and password')),
       );
-    } else {
+    } 
+    else if(email=="admin"){
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => AdminHome(),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Administrator Login succesful')),
+      );
+
+    }
+    else {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) => Home(),
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login successful')),
+        const SnackBar(content: Text('User Login successful')),
       );
     }
   }
