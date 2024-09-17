@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 final TextEditingController _requestTitle = TextEditingController();
 final TextEditingController _requestDescrip = TextEditingController();
 final TextEditingController _quantity = TextEditingController();
@@ -21,7 +20,6 @@ class RequestsPage extends StatefulWidget {
 }
 
 class _RequestsPageState extends State<RequestsPage> {
-  
   void _create(BuildContext context) {
     showDialog(
       context: context,
@@ -73,7 +71,7 @@ class _RequestsPageState extends State<RequestsPage> {
                 TextButton.icon(
                   icon: const Icon(Icons.attach_file),
                   label: const Text("Attach Document or Picture"),
-                  onPressed: (){},
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -121,6 +119,18 @@ class _RequestsPageState extends State<RequestsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Requests"),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF007BFF), // Blue color from the logo
+                Color(0xFF00CFFF), // Lighter blue for gradient effect
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -144,11 +154,14 @@ class _RequestsPageState extends State<RequestsPage> {
                     label: const Text(
                       'Create Request',
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange),
                     ),
-                    icon: const Icon(Icons.create),
+                    icon: const Icon(
+                      Icons.create,
+                      color: Colors.red,
+                    ),
                   ),
                 ],
               ),
@@ -162,6 +175,14 @@ class _RequestsPageState extends State<RequestsPage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          return _create(context);
+        },
+        tooltip: "Create Request",
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.add), // Floating button with solid red color
+      ),
     );
   }
 }
@@ -172,7 +193,6 @@ class Recents extends StatefulWidget {
 }
 
 class _RecentsState extends State<Recents> {
-  
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -198,7 +218,6 @@ class _RecentsState extends State<Recents> {
                         child: SizedBox(
                           width: double.maxFinite,
                           child: Column(
-                            
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Title: ${recentRequests[index]['title']!}"),

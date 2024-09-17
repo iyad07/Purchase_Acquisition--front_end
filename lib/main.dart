@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'user/home.dart';
+import 'login.dart';
+//import 'user/home.dart';
+//import 'admin/home.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -16,7 +17,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: Home(),
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }

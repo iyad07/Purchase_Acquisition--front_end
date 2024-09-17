@@ -3,15 +3,12 @@ import '../login.dart';
 import 'accoutpage.dart';
 import 'requests.dart';
 
-
 class AdminHome extends StatefulWidget {
   @override
   State<AdminHome> createState() => _AdminHomeState();
 }
 
 class _AdminHomeState extends State<AdminHome> {
-  
-  
   void _updateRequests() {
     setState(() {});
   }
@@ -33,36 +30,45 @@ class _AdminHomeState extends State<AdminHome> {
       {
         "title": "Request Status",
         "subtitle": "Check request status",
-        "onclick": () {
-        },
+        "onclick": () {},
       },
       {
         "title": "Request History",
         "subtitle": "Sent requests",
-        "onclick": () {
-          
-        },
+        "onclick": () {},
       },
       {
         "title": "Approvals",
         "subtitle": "Check approved requests",
-        "onclick": () {
-          
-          
-        },
+        "onclick": () {},
       },
     ];
 
     return Scaffold(
+      //backgroundColor: Co,
       appBar: AppBar(
         title: const Text('TotalEnergies'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF007BFF), // Blue color from the logo
+                Color(0xFF00CFFF), // Lighter blue for gradient effect
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/logo.png'), // Replace with your logo path
+          child:
+              Image.asset('../assets/logo.png'), // Replace with your logo path
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.help_outlined),
+            icon:
+                const Icon(Icons.help_outlined, color: Colors.red), // Red icon
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => LoginPage(),
@@ -70,7 +76,8 @@ class _AdminHomeState extends State<AdminHome> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.person_2_outlined),
+            icon: const Icon(Icons.person_2_outlined,
+                color: Colors.orange), // Orange icon
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => AccountPage(),
@@ -87,7 +94,7 @@ class _AdminHomeState extends State<AdminHome> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Purchase Requisition',
+                'Dashboard',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -107,43 +114,10 @@ class _AdminHomeState extends State<AdminHome> {
                   childAspectRatio: 1.5,
                 ),
                 itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: InkWell(
-                      onTap: requestItems[index]['onclick'],
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                requestItems[index]['title']!,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                requestItems[index]['subtitle']!,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                  return _buildHoverCard(
+                    requestItems[index]['title']!,
+                    requestItems[index]['subtitle']!,
+                    requestItems[index]['onclick'],
                   );
                 },
               ),
@@ -162,10 +136,19 @@ class _AdminHomeState extends State<AdminHome> {
                             builder: (BuildContext context) =>
                                 const RequestsPage(),
                           ))
-                          .then((_) => _updateRequests()); // Handle see all action
+                          .then((_) =>
+                              _updateRequests()); // Handle see all action
                     },
-                    icon: const Icon(Icons.arrow_forward_ios_outlined),
-                    label: const Text('See all'),
+                    icon: const Icon(Icons.arrow_forward_ios_outlined,
+                        color: Colors.orange), // Orange icon for "See all"
+                    label: const Text(
+                      'See all',
+                      style: TextStyle(color: Colors.orange), // Orange text
+                    ),
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all(
+                          Colors.orange), // Orange for the button
+                    ),
                   ),
                 ],
               ),
@@ -175,5 +158,83 @@ class _AdminHomeState extends State<AdminHome> {
         ),
       ),
     );
+  }
+
+  // Hover card implementation
+  Widget _buildHoverCard(String title, String subtitle, Function()? onClick) {
+    bool isHovered = false;
+
+    return StatefulBuilder(builder: (context, setState) {
+      return MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            isHovered = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            isHovered = false;
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          decoration: BoxDecoration(
+            gradient: isHovered
+                ? const LinearGradient(
+                    colors: [Colors.red, Colors.orange], // Hover effect
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : const LinearGradient(
+                    colors: [
+                      Colors.white,
+                      Colors.white
+                    ], // Default colors (red to orange)
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                offset: const Offset(0, 4),
+                blurRadius: 8.0,
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: onClick,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: isHovered
+                          ? const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )
+                          : const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )),
+                  const SizedBox(height: 6),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

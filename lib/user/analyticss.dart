@@ -16,6 +16,18 @@ class AnalyticsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analytics'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF007BFF), // Blue color from the logo
+                Color(0xFF00CFFF), // Lighter blue for gradient effect
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
