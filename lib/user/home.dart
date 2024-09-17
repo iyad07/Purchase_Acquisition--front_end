@@ -20,11 +20,7 @@ class _HomeState extends State<Home> {
         "title": "Raise Request",
         "subtitle": "Create a request",
         "onclick": () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(
-                builder: (BuildContext context) => const RequestsPage(),
-              ))
-              .then((_) => _updateRequests());
+          return RequestsPageState().create(context);
         },
       },
       {

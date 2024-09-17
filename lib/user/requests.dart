@@ -17,12 +17,12 @@ class RequestsPage extends StatefulWidget {
   const RequestsPage({super.key});
 
   @override
-  State<RequestsPage> createState() => _RequestsPageState();
+  State<RequestsPage> createState() => RequestsPageState();
 }
 
-class _RequestsPageState extends State<RequestsPage> {
+class RequestsPageState extends State<RequestsPage> {
   
-  void _create(BuildContext context) {
+  void create(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -102,6 +102,7 @@ class _RequestsPageState extends State<RequestsPage> {
                   });
                   _requestTitle.clear(); // Clear the input fields
                   _requestDescrip.clear();
+                  _unitOfMeasurement.clear();
                   _deliveryDate.clear();
                   _deliveryPlace.clear();
                   _quantity.clear();
@@ -141,31 +142,12 @@ class _RequestsPageState extends State<RequestsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'My Requests',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextButton.icon(
-                    onPressed: () => _create(context),
-                    label: const Text(
-                      'Create Request',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange),
-                    ),
-                    icon: const Icon(
-                      Icons.create,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
+              const Text(
+                'My Requests',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 16,
@@ -179,7 +161,7 @@ class _RequestsPageState extends State<RequestsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          return _create(context);
+          return create(context);
         },
         tooltip: "Create Request",
         backgroundColor: Colors.red,
