@@ -4,6 +4,8 @@ import 'accoutpage.dart';
 import 'requests.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -55,11 +57,7 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              Image.asset('../assets/logo.png'), // Replace with your logo path
-        ),
+        leading: Image.asset('../assets/logo.png'),
         actions: [
           IconButton(
             icon:

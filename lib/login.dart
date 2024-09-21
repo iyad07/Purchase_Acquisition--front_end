@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'signup.dart';
 import 'user/home.dart';
 import 'admin/home.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // For simplicity, we'll just print the values on login
   void _login() {
     String email = _emailController.text;
     String password = _passwordController.text;
@@ -20,8 +22,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter both email and password')),
       );
-    } 
-    else if(email=="admin"){
+    } else if (email == "admin") {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) => AdminHome(),
@@ -30,9 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Administrator Login succesful')),
       );
-
-    }
-    else {
+    } else {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) => Home(),
@@ -46,40 +45,105 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Login'),
-            ),
-          ],
+    return  Scaffold(
+        body: Container(
+          margin: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _header(context),
+              _inputField(context),
+              _forgotPassword(context),
+              _signup(context),
+            ],
+          ),
         ),
+      );
+  }
+
+  _header(context) {
+    return const Column(
+      children: [
+        Text(
+          "Welcome Back",
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+        ),
+        Text("Enter your credential to login"),
+      ],
+    );
+  }
+
+  _inputField(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextField(
+
+          controller: _emailController,
+          decoration: InputDecoration(
+              hintText: "Username",
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide.none
+              ),
+              fillColor: Colors.orange.withOpacity(0.1),
+              filled: true,
+              prefixIcon: const Icon(Icons.person)),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _passwordController,
+          decoration: InputDecoration(
+            hintText: "Password",
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide.none),
+            fillColor: Colors.orange.withOpacity(0.1),
+            filled: true,
+            prefixIcon: const Icon(Icons.password),
+          ),
+          obscureText: true,
+        ),
+        const SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: _login,
+          style: ElevatedButton.styleFrom(
+            shape: const StadiumBorder(),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            backgroundColor: Colors.red,
+          ),
+          child: const Text(
+            "Login",
+            style: TextStyle(fontSize: 20),
+          ),
+        )
+      ],
+    );
+  }
+
+  _forgotPassword(context) {
+    return TextButton(
+      onPressed: () {},
+      child: const Text("Forgot password?",
+        style: TextStyle(color: Colors.red),
       ),
+    );
+  }
+
+  _signup(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Dont have an account? "),
+        TextButton(
+          onPressed:(){Navigator.of(context).push(
+          MaterialPageRoute(
+          builder: (BuildContext context) => const SignupPage(),
+        )
+      );},
+          child: const Text("Sign Up", style: TextStyle(color: Colors.red),)
+        )
+      ],
     );
   }
 }
