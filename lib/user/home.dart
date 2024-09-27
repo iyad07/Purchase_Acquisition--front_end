@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:form_acquistion/request_handler.dart';
 import '../login.dart';
 import 'accoutpage.dart';
-import 'requests.dart';
-
+import 'request_history.dart';
+import 'request_status.dart';
+import 'approved_requests.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -11,40 +13,103 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void _updateRequests() {
-    setState(() {});
+  void addtoRequests(BuildContext context) {
+    if (requestTitle.text.isEmpty ||
+        requestDescrip.text.isEmpty ||
+        quantity.text.isEmpty ||
+        unitOfMeasurement.text.isEmpty ||
+        deliveryPlace.text.isEmpty ||
+        deliveryDate.text.isEmpty ||
+        document.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill out all fields"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      
+    }
+    setState(() {
+        requests.insert(
+            0,
+            Requests(
+                title: requestTitle.text,
+                date: DateTime.now().toString(),
+                description: requestDescrip.text,
+                quantity: quantity.text,
+                unitOfMeasurement: unitOfMeasurement.text,
+                deliveryPlace: deliveryPlace.text,
+                deliveryDate: deliveryDate.text,
+                document: document.text));
+      });
+      _clearInputFields();
+      Navigator.of(context).pop();
+  }
+
+  void _clearInputFields() {
+    requestTitle.clear();
+    requestDescrip.clear();
+    quantity.clear();
+    unitOfMeasurement.clear();
+    deliveryPlace.clear();
+    deliveryDate.clear();
+    document.clear();
   }
 
   @override
   Widget build(BuildContext context) {
+    void updateRequests() {
+      setState(() {});
+    }
     final List<Map<String, dynamic>> requestItems = [
       {
         "title": "Raise Request",
-        "subtitle": "Create a request",
+        "subtitle": "Create and submit a request",
         "onclick": () {
-          return RequestsPageState().create(context);
+          return popCreateDialog(context, () {
+            addtoRequests(context);
+          });
         },
       },
       {
         "title": "Request Status",
         "subtitle": "Check request status",
-        "onclick": () {},
+        "onclick": () {
+          return Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const RequestStatusPage(),
+            ),
+          );
+        },
       },
       {
         "title": "Request History",
         "subtitle": "Sent requests",
-        "onclick": () {},
+        "onclick": () {
+          return Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const RequestsPage(),
+            ),
+          ).then((_) => updateRequests());
+        },
       },
       {
         "title": "Approvals",
         "subtitle": "Check approved requests",
-        "onclick": () {},
+        "onclick": () {return Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const ApprovedRequestPage(),
+            ),
+          ).then((_) => updateRequests());},
       },
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TotalEnergies'),
+        title: const Text(
+          'TotalEnergies',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -57,20 +122,23 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        leading: Image.asset('../assets/logo.png'),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('../assets/logo.png'),
+        ),
         actions: [
           IconButton(
             icon:
                 const Icon(Icons.help_outlined, color: Colors.red), // Red icon
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => LoginPage(),
+                builder: (BuildContext context) => const LoginPage(),
               )); // Navigate to LoginPage
             },
           ),
           IconButton(
             icon: const Icon(Icons.person_2_outlined,
-                color: Colors.orange), // Orange icon
+                color: Colors.redAccent), // redAccent icon
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => AccountPage(),
@@ -88,7 +156,7 @@ class _HomeState extends State<Home> {
             children: [
               const Text(
                 'Dashboard',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -120,33 +188,43 @@ class _HomeState extends State<Home> {
                 children: [
                   const Text(
                     'My Recent Requests',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const RequestsPage(),
-                          ))
-                          .then((_) =>
-                              _updateRequests()); // Handle see all action
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const RequestsPage(),
+                        ),
+                      );
+                      // Handle see all action
                     },
-                    icon: const Icon(Icons.arrow_forward_ios_outlined,
-                        color: Colors.orange), // Orange icon for "See all"
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_outlined,
+                    ),
+                    // redAccent icon for "See all"
                     label: const Text(
                       'See all',
-                      style: TextStyle(color: Colors.orange), // Orange text
+                      // redAccent text
                     ),
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(
-                          Colors.orange), // Orange for the button
+                          Colors.red), // redAccent for the button
                     ),
                   ),
                 ],
               ),
-              Recents(),
+              const SizedBox(
+                height: 16,
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: requests.length,
+                  itemBuilder: (context, index) {
+                    return buildPendingCard(context,requests, index);
+                  } //pandable to fill the screen
+                  ),
             ],
           ),
         ),
@@ -173,9 +251,9 @@ class _HomeState extends State<Home> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           decoration: BoxDecoration(
-            gradient: isHovered
+            /*gradient: isHovered
                 ? const LinearGradient(
-                    colors: [Colors.red, Colors.orange], // Hover effect
+                    colors: [Colors.red, Colors.redAccent], // Hover effect
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   )
@@ -183,10 +261,11 @@ class _HomeState extends State<Home> {
                     colors: [
                       Colors.white,
                       Colors.white
-                    ], // Default colors (red to orange)
+                    ], // Default colors (red to redAccent)
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                  ),
+                  ),*/
+            color: isHovered ? Colors.red : Colors.white,
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: [
               BoxShadow(
@@ -206,22 +285,27 @@ class _HomeState extends State<Home> {
                   Text(title,
                       style: isHovered
                           ? const TextStyle(
-                              fontSize: 20,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             )
                           : const TextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             )),
                   const SizedBox(height: 6),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
+                    style: isHovered
+                        ? const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          )
+                        : const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
                   ),
                 ],
               ),

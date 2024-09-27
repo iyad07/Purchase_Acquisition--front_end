@@ -1,53 +1,73 @@
 import 'package:flutter/material.dart';
 import '../login.dart';
 import 'accoutpage.dart';
-import 'requests.dart';
+import '../request_handler.dart';
+import 'request_history.dart';
+import 'pending_request.dart';
 
 class AdminHome extends StatefulWidget {
+  const AdminHome({super.key});
+
   @override
   State<AdminHome> createState() => _AdminHomeState();
 }
 
 class _AdminHomeState extends State<AdminHome> {
-  void _updateRequests() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
+    void updateRequests() {
+      setState(() {});
+    }
+
+    void approve(index) {
+      setState(() {
+        approvedRequests.insert(0, requests[index]);
+        requests.remove(
+          requests[index],
+        );
+      });
+      print(approvedRequests[0].title);
+      Navigator.of(context).pop();
+    }
+
+    void decline(index) {
+      setState(() {
+        declinedRequests.insert(0, requests[index]);
+        requests.remove(
+          requests[index],
+        );
+      });
+      Navigator.of(context).pop();
+      print(declinedRequests[0].title);
+    }
+
     final List<Map<String, dynamic>> requestItems = [
       {
-        "title": "Raise Request",
-        "subtitle": "Create a request",
+        "title": "Approve Request",
+        "subtitle": "Approve or decline a request",
         "onclick": () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(
-                builder: (BuildContext context) => const RequestsPage(),
-              ))
-              .then((_) => _updateRequests());
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => const PendingRequestPage(),
+          )).then((_) => updateRequests());
         },
       },
       {
-        "title": "Request Status",
-        "subtitle": "Check request status",
-        "onclick": () {},
-      },
-      {
         "title": "Request History",
-        "subtitle": "Sent requests",
-        "onclick": () {},
-      },
-      {
-        "title": "Approvals",
-        "subtitle": "Check approved requests",
-        "onclick": () {},
-      },
+        "subtitle": "Check request history",
+        "onclick": () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => const RequestAdminPage(),
+          )).then((_) => updateRequests());
+        },
+      }
     ];
 
     return Scaffold(
-      //backgroundColor: Co,
       appBar: AppBar(
-        title: const Text('TotalEnergies'),
+        title: const Text(
+          'TotalEnergies',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -62,8 +82,7 @@ class _AdminHomeState extends State<AdminHome> {
         ),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child:
-              Image.asset('../assets/logo.png'), // Replace with your logo path
+          child: Image.asset('../assets/logo.png'),
         ),
         actions: [
           IconButton(
@@ -71,13 +90,13 @@ class _AdminHomeState extends State<AdminHome> {
                 const Icon(Icons.help_outlined, color: Colors.red), // Red icon
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => LoginPage(),
+                builder: (BuildContext context) => const LoginPage(),
               )); // Navigate to LoginPage
             },
           ),
           IconButton(
             icon: const Icon(Icons.person_2_outlined,
-                color: Colors.orange), // Orange icon
+                color: Colors.redAccent), // redAccent icon
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => AccountPage(),
@@ -95,7 +114,7 @@ class _AdminHomeState extends State<AdminHome> {
             children: [
               const Text(
                 'Dashboard',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -131,28 +150,43 @@ class _AdminHomeState extends State<AdminHome> {
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const RequestsPage(),
-                          ))
-                          .then((_) =>
-                              _updateRequests()); // Handle see all action
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const RequestAdminPage(),
+                        ),
+                      );
+                      // Handle see all action
                     },
-                    icon: const Icon(Icons.arrow_forward_ios_outlined,
-                        color: Colors.orange), // Orange icon for "See all"
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_outlined,
+                    ),
+                    // redAccent icon for "See all"
                     label: const Text(
                       'See all',
-                      style: TextStyle(color: Colors.orange), // Orange text
+                      // redAccent text
                     ),
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(
-                          Colors.orange), // Orange for the button
+                          Colors.red), // redAccent for the button
                     ),
                   ),
                 ],
               ),
-              Recents(),
+              const SizedBox(
+                height: 16,
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: requests.length,
+                  itemBuilder: (context, index) {
+                    return buildAdminPendingCard(context, requests, index, () {
+                      approve(index);
+                    }, () {
+                      decline(index);
+                    });
+                  } //pandable to fill the screen
+                  ),
             ],
           ),
         ),
@@ -179,20 +213,7 @@ class _AdminHomeState extends State<AdminHome> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           decoration: BoxDecoration(
-            gradient: isHovered
-                ? const LinearGradient(
-                    colors: [Colors.red, Colors.orange], // Hover effect
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : const LinearGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.white
-                    ], // Default colors (red to orange)
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+            color: isHovered ? Colors.red : Colors.white,
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: [
               BoxShadow(
@@ -212,22 +233,27 @@ class _AdminHomeState extends State<AdminHome> {
                   Text(title,
                       style: isHovered
                           ? const TextStyle(
-                              fontSize: 20,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             )
                           : const TextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             )),
                   const SizedBox(height: 6),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
+                    style: isHovered
+                        ? const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          )
+                        : const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
                   ),
                 ],
               ),

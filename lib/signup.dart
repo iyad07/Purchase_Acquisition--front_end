@@ -18,12 +18,22 @@ class _SignupPageState extends State<SignupPage> {
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  const SizedBox(height: 60.0),
+                  //const SizedBox(height: 60.0),
+                  Container(
+                    height: 100.0,
+                    width: 150.0,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/logo.png'),
+                          fit: BoxFit.cover),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
                   const Text(
                     "Sign up",
                     style: TextStyle(
@@ -48,7 +58,7 @@ class _SignupPageState extends State<SignupPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
-                        fillColor: Colors.orange.withOpacity(0.1),
+                        fillColor: Colors.redAccent.withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.person)),
                   ),
@@ -59,7 +69,7 @@ class _SignupPageState extends State<SignupPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
-                        fillColor: Colors.orange.withOpacity(0.1),
+                        fillColor: Colors.redAccent.withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.email)),
                   ),
@@ -70,7 +80,7 @@ class _SignupPageState extends State<SignupPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none),
-                      fillColor: Colors.orange.withOpacity(0.1),
+                      fillColor: Colors.redAccent.withOpacity(0.1),
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
                     ),
@@ -83,7 +93,7 @@ class _SignupPageState extends State<SignupPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none),
-                      fillColor: Colors.orange.withOpacity(0.1),
+                      fillColor: Colors.redAccent.withOpacity(0.1),
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
                     ),

@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
+import '../request_handler.dart';
 
 class AnalyticsPage extends StatelessWidget {
-  
+  const AnalyticsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Update the analyticsItems list to use the dynamic totalRequests count
     final List<Map<String, dynamic>> analyticsItems = [
-      {"title": "Total requests", "count": 10, "color": Colors.blue},
-      {"title": "Approved", "count": 3, "color": Colors.lightBlue},
-      {"title": "Declined", "count": 3, "color": Colors.tealAccent},
-      {"title": "Pending", "count": 4, "color": Colors.lightGreen},
+      {
+        "title": "Approved",
+        "count": approvedRequests.length,
+        "color": Colors.green
+      },
+      {
+        "title": "Declined",
+        "count": declinedRequests.length,
+        "color": Colors.red
+      },
+      {
+        "title": "Pending",
+        "count": requests.length,
+        "color": Colors.white54,
+      },
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analytics'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF007BFF), // Blue color from the logo
+                Color(0xFF00CFFF), // Lighter blue for gradient effect
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -4,6 +4,8 @@ import 'analyticss.dart';
 
 class AccountPage extends StatelessWidget {
   final TextEditingController email = TextEditingController();
+
+  AccountPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,7 @@ class AccountPage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      LoginPage())); // Handle log out action
+                      const LoginPage())); // Handle log out action
             },
             icon: const Icon(
               Icons.logout_outlined,
@@ -103,7 +105,7 @@ class AccountPage extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      AnalyticsPage())); // Handle analytics tap
+                      const AnalyticsPage())); // Handle analytics tap
             },
           ),
         ],

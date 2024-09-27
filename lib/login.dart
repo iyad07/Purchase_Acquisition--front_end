@@ -25,7 +25,7 @@ class LoginPageState extends State<LoginPage> {
     } else if (email == "admin") {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => AdminHome(),
+          builder: (BuildContext context) => const AdminHome(),
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(
@@ -34,7 +34,7 @@ class LoginPageState extends State<LoginPage> {
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
+          builder: (BuildContext context) => const Home(),
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(
@@ -45,30 +45,39 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        body: Container(
-          margin: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _header(context),
-              _inputField(context),
-              _forgotPassword(context),
-              _signup(context),
-            ],
-          ),
+    return Scaffold(
+      body: Container(
+        margin: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _header(context),
+            _inputField(context),
+            _forgotPassword(context),
+            _signup(context),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   _header(context) {
-    return const Column(
+    return Column(
       children: [
-        Text(
+        Container(
+          height: 150.0,
+          width: 150.0,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/logo.png'), fit: BoxFit.fitWidth),
+            shape: BoxShape.rectangle,
+          ),
+        ),
+        const Text(
           "Welcome Back",
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
-        Text("Enter your credential to login"),
+        const Text("Enter your credential to login"),
       ],
     );
   }
@@ -78,15 +87,13 @@ class LoginPageState extends State<LoginPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-
           controller: _emailController,
           decoration: InputDecoration(
               hintText: "Username",
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide.none
-              ),
-              fillColor: Colors.orange.withOpacity(0.1),
+                  borderSide: BorderSide.none),
+              fillColor: Colors.redAccent.withOpacity(0.1),
               filled: true,
               prefixIcon: const Icon(Icons.person)),
         ),
@@ -98,7 +105,7 @@ class LoginPageState extends State<LoginPage> {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
                 borderSide: BorderSide.none),
-            fillColor: Colors.orange.withOpacity(0.1),
+            fillColor: Colors.redAccent.withOpacity(0.1),
             filled: true,
             prefixIcon: const Icon(Icons.password),
           ),
@@ -106,7 +113,14 @@ class LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 10),
         ElevatedButton(
-          onPressed: _login,
+          onPressed: () {
+            /*Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => const AdminHome(),
+              ),
+            );*/
+            _login();
+          },
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -124,7 +138,8 @@ class LoginPageState extends State<LoginPage> {
   _forgotPassword(context) {
     return TextButton(
       onPressed: () {},
-      child: const Text("Forgot password?",
+      child: const Text(
+        "Forgot password?",
         style: TextStyle(color: Colors.red),
       ),
     );
@@ -136,13 +151,15 @@ class LoginPageState extends State<LoginPage> {
       children: [
         const Text("Dont have an account? "),
         TextButton(
-          onPressed:(){Navigator.of(context).push(
-          MaterialPageRoute(
-          builder: (BuildContext context) => const SignupPage(),
-        )
-      );},
-          child: const Text("Sign Up", style: TextStyle(color: Colors.red),)
-        )
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => const SignupPage(),
+              ));
+            },
+            child: const Text(
+              "Sign Up",
+              style: TextStyle(color: Colors.red),
+            ))
       ],
     );
   }
