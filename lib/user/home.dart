@@ -5,6 +5,7 @@ import 'accoutpage.dart';
 import 'request_history.dart';
 import 'request_status.dart';
 import 'approved_requests.dart';
+import 'create_request.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -13,48 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void addtoRequests(BuildContext context) {
-    if (requestTitle.text.isEmpty ||
-        requestDescrip.text.isEmpty ||
-        quantity.text.isEmpty ||
-        unitOfMeasurement.text.isEmpty ||
-        deliveryPlace.text.isEmpty ||
-        deliveryDate.text.isEmpty ||
-        document.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please fill out all fields"),
-          backgroundColor: Colors.red,
-        ),
-      );
-      
-    }
-    setState(() {
-        requests.insert(
-            0,
-            Requests(
-                title: requestTitle.text,
-                date: DateTime.now().toString(),
-                description: requestDescrip.text,
-                quantity: quantity.text,
-                unitOfMeasurement: unitOfMeasurement.text,
-                deliveryPlace: deliveryPlace.text,
-                deliveryDate: deliveryDate.text,
-                document: document.text));
-      });
-      _clearInputFields();
-      Navigator.of(context).pop();
-  }
-
-  void _clearInputFields() {
-    requestTitle.clear();
-    requestDescrip.clear();
-    quantity.clear();
-    unitOfMeasurement.clear();
-    deliveryPlace.clear();
-    deliveryDate.clear();
-    document.clear();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +26,11 @@ class _HomeState extends State<Home> {
         "title": "Raise Request",
         "subtitle": "Create and submit a request",
         "onclick": () {
-          return popCreateDialog(context, () {
-            addtoRequests(context);
-          });
+          return Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const CreateRequestPage(),
+            ),
+          ).then((_) => updateRequests());
         },
       },
       {
