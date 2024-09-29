@@ -1,6 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../request_handler.dart';
+import 'dart:io' show File;
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class CreateRequestPage extends StatefulWidget {
   const CreateRequestPage({super.key});
@@ -16,8 +19,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
         requestDescrip.text.isEmpty ||
         quantity.text.isEmpty ||
         deliveryPlace.text.isEmpty ||
-        deliveryDate.text.isEmpty ||
-        document.text.isEmpty) {
+        deliveryDate.text.isEmpty ) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please fill out all fields"),
@@ -36,7 +38,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
               unitOfMeasurement: _selectedValue.toString(),
               deliveryPlace: deliveryPlace.text,
               deliveryDate: deliveryDate.text,
-              document: document.text));
+              document: document));
     });
     _clearInputFields();
     Navigator.of(context).pop();
@@ -48,7 +50,6 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     quantity.clear();
     deliveryPlace.clear();
     deliveryDate.clear();
-    document.clear();
   }
 
   Widget _builddropdown(String label) {
@@ -113,10 +114,49 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     }
   }
 
-  void _pickDocument() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      document.text = result.files.single.name;
+  Future<void> pickFile(BuildContext context) async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png', 'pdf'],  // Only accept specific file types
+      );
+
+      if (result != null) {
+        String fileName = result.files.single.name;
+        bool isPDF = fileName.endsWith('.pdf');
+
+        if (kIsWeb) {
+          Uint8List? webFileBytes = result.files.single.bytes;
+
+          // Store the file info in the list (for web)
+          setState(() {
+            document=FileManager(
+              fileName: fileName,
+              isPDF: isPDF,
+              webFileBytes: webFileBytes,
+            );
+          });
+        } else {
+          File pickedFile = File(result.files.single.path!);
+
+          // Store the file info in the list (for mobile/desktop)
+          setState(() {
+            document=FileManager(
+              fileName: fileName,
+              isPDF: isPDF,
+              pickedFile: pickedFile,
+            );
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No file selected')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking file: $e')),
+      );
     }
   }
 
@@ -173,7 +213,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
                     context), // Using Date Picker here
                 const SizedBox(height: 16),
                 TextButton.icon(
-                    onPressed: _pickDocument,
+                    onPressed: (){pickFile(context);},
                     icon: const Icon(
                       Icons.attach_file_sharp,
                       color: Colors.red,
