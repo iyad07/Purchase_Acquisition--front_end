@@ -14,7 +14,7 @@ FileManager? document;
 
 //Objects
 class FileManager {
-  String fileName;
+  String? fileName;
   bool isPDF;
   File? pickedFile; // For mobile/desktop
   Uint8List? webFileBytes; // For web
@@ -52,23 +52,23 @@ class Requests {
 //Lists
 final List<Requests> requests = [
   Requests(
-    title: "New Request",
-    description: "newRequest",
-    date: DateTime.now().toString(),
-    quantity: "20",
-    unitOfMeasurement: "cm",
-    deliveryPlace: "mdmsa",
-    deliveryDate: "20th",
-  ),
+      title: "New Request",
+      description: "newRequest",
+      date: DateTime.now().toString(),
+      quantity: "20",
+      unitOfMeasurement: "cm",
+      deliveryPlace: "mdmsa",
+      deliveryDate: "20th",
+      document: FileManager(fileName: "example.com", isPDF: false)),
   Requests(
-    title: "Another Request",
-    description: "secondRequest",
-    date: DateTime.now().toString(),
-    quantity: "15",
-    unitOfMeasurement: "kg",
-    deliveryPlace: "accra",
-    deliveryDate: "25th",
-  ),
+      title: "Another Request",
+      description: "secondRequest",
+      date: DateTime.now().toString(),
+      quantity: "15",
+      unitOfMeasurement: "kg",
+      deliveryPlace: "accra",
+      deliveryDate: "25th",
+      document: FileManager(fileName: "example.com", isPDF: false)),
 ];
 List<Requests> approvedRequests = [];
 List<Requests> declinedRequests = [];
@@ -85,7 +85,7 @@ void previewFileByIndex(BuildContext context, int index, requestList) {
   FileManager file = requestList[index].document;
 
   if (kIsWeb) {
-    previewFileOnWeb(context, file.webFileBytes, file.fileName, file.isPDF);
+    previewFileOnWeb(context, file.webFileBytes, file.fileName!, file.isPDF);
   } else {
     previewFileOnMobile(context, file.pickedFile, file.isPDF);
   }
@@ -98,7 +98,10 @@ void previewFileOnWeb(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('File Preview'),
+        title: const Text(
+          'File Preview',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: fileBytes != null
             ? (isPDF
                 ? const Text('PDF preview is not supported on web.')
@@ -107,7 +110,10 @@ void previewFileOnWeb(
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text(
+              'Close',
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ],
       );
@@ -121,7 +127,10 @@ void previewFileOnMobile(BuildContext context, File? pickedFile, bool isPDF) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('File Preview'),
+        title: const Text(
+          'File Preview',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: SizedBox(
           width: double.maxFinite,
           child: isPDF
@@ -136,7 +145,10 @@ void previewFileOnMobile(BuildContext context, File? pickedFile, bool isPDF) {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text(
+              'Close',
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ],
       );
@@ -188,7 +200,7 @@ void popAdminDetails(context, requestList, index, approve, decline) {
               shape: const StadiumBorder(),
               backgroundColor: Colors.green[500],
             ),
-            child: const Text("Approve"),
+            child: const Text("Approve",style: TextStyle(color: Colors.white),),
           ),
         ],
       );
@@ -257,6 +269,7 @@ Widget documentdetailRow(
             Text(
               value,
             ),
+            SizedBox(width: 10,),
             ElevatedButton(
               onPressed: () {
                 previewFileByIndex(context, index, requestList);
@@ -265,7 +278,7 @@ Widget documentdetailRow(
                 shape: const StadiumBorder(),
                 backgroundColor: Colors.red,
               ),
-              child: const Text("Preview"),
+              child: const Text("Preview",style: TextStyle(color: Colors.white),),
             ),
           ],
         ),

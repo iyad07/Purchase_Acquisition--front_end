@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
-import 'user/home.dart';
+import 'user/dashboard.dart';
 import 'admin/home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -128,7 +128,8 @@ class LoginPageState extends State<LoginPage> {
           ),
           child: const Text(
             "Login",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20,color:Colors.white ),
+
           ),
         )
       ],

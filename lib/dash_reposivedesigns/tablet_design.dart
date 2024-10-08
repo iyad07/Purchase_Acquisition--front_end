@@ -1,69 +1,77 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_acquistion/menu.dart';
-import '../request_handler.dart';
-import 'request_history.dart';
-import 'pending_request.dart';
+import 'package:form_acquistion/request_handler.dart';
+import 'package:form_acquistion/user/approved_requests.dart';
+import 'package:form_acquistion/user/create_request.dart';
+import 'package:form_acquistion/user/request_history.dart';
+import 'package:form_acquistion/user/request_status.dart';
 
-class AdminHome extends StatefulWidget {
-  const AdminHome({super.key});
+class TabletDesign extends StatefulWidget {
+  const TabletDesign({super.key});
 
   @override
-  State<AdminHome> createState() => _AdminHomeState();
+  State<TabletDesign> createState() => _TabletDesignState();
 }
 
-class _AdminHomeState extends State<AdminHome> {
+class _TabletDesignState extends State<TabletDesign> {
   @override
   Widget build(BuildContext context) {
     void updateRequests() {
       setState(() {});
     }
 
-    void approve(index) {
-      setState(() {
-        approvedRequests.insert(0, requests[index]);
-        requests.remove(
-          requests[index],
-        );
-      });
-      if (kDebugMode) {
-        print(approvedRequests[0].title);
-      }
-      Navigator.of(context).pop();
-    }
-
-    void decline(index) {
-      setState(() {
-        declinedRequests.insert(0, requests[index]);
-        requests.remove(
-          requests[index],
-        );
-      });
-      Navigator.of(context).pop();
-      if (kDebugMode) {
-        print(declinedRequests[0].title);
-      }
-    }
-
     final List<Map<String, dynamic>> requestItems = [
       {
-        "title": "Approve Request",
-        "subtitle": "Approve or decline a request",
+        "title": "Raise Request",
+        "subtitle": "Create and submit a request",
         "onclick": () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const PendingRequestPage(),
-          )).then((_) => updateRequests());
+          return Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const CreateRequestPage(),
+                ),
+              )
+              .then((_) => updateRequests());
+        },
+      },
+      {
+        "title": "Request Status",
+        "subtitle": "Check request status",
+        "onclick": () {
+          return Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const RequestStatusPage(),
+            ),
+          );
         },
       },
       {
         "title": "Request History",
-        "subtitle": "Check request history",
+        "subtitle": "Sent requests",
         "onclick": () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const RequestAdminPage(),
-          )).then((_) => updateRequests());
+          return Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const RequestsPage(),
+                ),
+              )
+              .then((_) => updateRequests());
         },
-      }
+      },
+      {
+        "title": "Approvals",
+        "subtitle": "Check approved requests",
+        "onclick": () {
+          return Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      const ApprovedRequestPage(),
+                ),
+              )
+              .then((_) => updateRequests());
+        },
+      },
     ];
 
     return Scaffold(
@@ -111,7 +119,7 @@ class _AdminHomeState extends State<AdminHome> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: requestItems.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 4,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                   childAspectRatio: 1.5,
@@ -137,14 +145,14 @@ class _AdminHomeState extends State<AdminHome> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              const RequestAdminPage(),
+                              const RequestsPage(),
                         ),
                       );
                       // Handle see all action
                     },
                     icon: const Icon(
-                      Icons.arrow_forward_ios_outlined
-                      ,color: Colors.redAccent,
+                      Icons.arrow_forward_ios_outlined,
+                      color: Colors.redAccent,
                     ),
                     // redAccent icon for "See all"
                     label: const Text(
@@ -165,11 +173,7 @@ class _AdminHomeState extends State<AdminHome> {
                   shrinkWrap: true,
                   itemCount: requests.length,
                   itemBuilder: (context, index) {
-                    return buildAdminPendingCard(context, requests, index, () {
-                      approve(index);
-                    }, () {
-                      decline(index);
-                    });
+                    return buildPendingCard(context, requests, index);
                   } //pandable to fill the screen
                   ),
             ],

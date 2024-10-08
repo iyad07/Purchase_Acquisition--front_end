@@ -114,7 +114,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     }
   }
 
-  Future<void> pickFile(BuildContext context) async {
+  Future<void> pickFile(context) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,

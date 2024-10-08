@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:form_acquistion/menu.dart';
 import 'package:form_acquistion/request_handler.dart';
-import '../login.dart';
-import 'accoutpage.dart';
-import 'request_history.dart';
-import 'request_status.dart';
-import 'approved_requests.dart';
-import 'create_request.dart';
-class Home extends StatefulWidget {
-  const Home({super.key});
+import 'package:form_acquistion/user/approved_requests.dart';
+import 'package:form_acquistion/user/create_request.dart';
+import 'package:form_acquistion/user/request_history.dart';
+import 'package:form_acquistion/user/request_status.dart';
+
+class MobileDesign extends StatefulWidget {
+  const MobileDesign({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<MobileDesign> createState() => _MobileDesignState();
 }
 
-class _HomeState extends State<Home> {
-  
-
+class _MobileDesignState extends State<MobileDesign> {
   @override
   Widget build(BuildContext context) {
     void updateRequests() {
       setState(() {});
     }
+
     final List<Map<String, dynamic>> requestItems = [
       {
         "title": "Raise Request",
         "subtitle": "Create and submit a request",
         "onclick": () {
-          return Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => const CreateRequestPage(),
-            ),
-          ).then((_) => updateRequests());
+          return Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const CreateRequestPage(),
+                ),
+              )
+              .then((_) => updateRequests());
         },
       },
       {
@@ -48,25 +49,33 @@ class _HomeState extends State<Home> {
         "title": "Request History",
         "subtitle": "Sent requests",
         "onclick": () {
-          return Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => const RequestsPage(),
-            ),
-          ).then((_) => updateRequests());
+          return Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const RequestsPage(),
+                ),
+              )
+              .then((_) => updateRequests());
         },
       },
       {
         "title": "Approvals",
         "subtitle": "Check approved requests",
-        "onclick": () {return Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => const ApprovedRequestPage(),
-            ),
-          ).then((_) => updateRequests());},
+        "onclick": () {
+          return Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      const ApprovedRequestPage(),
+                ),
+              )
+              .then((_) => updateRequests());
+        },
       },
     ];
 
     return Scaffold(
+      endDrawer: MyDrawer(),
       appBar: AppBar(
         title: const Text(
           'TotalEnergies',
@@ -88,27 +97,6 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(8.0),
           child: Image.asset('../assets/logo.png'),
         ),
-        actions: [
-          IconButton(
-            icon:
-                const Icon(Icons.help_outlined, color: Colors.red), // Red icon
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const LoginPage(),
-              )); // Navigate to LoginPage
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person_2_outlined,
-                color: Colors.redAccent), // redAccent icon
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => AccountPage(),
-              )); // Navigate to AccountPage
-            },
-            tooltip: "Account",
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -164,6 +152,7 @@ class _HomeState extends State<Home> {
                     },
                     icon: const Icon(
                       Icons.arrow_forward_ios_outlined,
+                      color: Colors.redAccent,
                     ),
                     // redAccent icon for "See all"
                     label: const Text(
@@ -171,7 +160,7 @@ class _HomeState extends State<Home> {
                       // redAccent text
                     ),
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(
+                      foregroundColor: WidgetStateProperty.all(
                           Colors.red), // redAccent for the button
                     ),
                   ),
@@ -184,7 +173,7 @@ class _HomeState extends State<Home> {
                   shrinkWrap: true,
                   itemCount: requests.length,
                   itemBuilder: (context, index) {
-                    return buildPendingCard(context,requests, index);
+                    return buildPendingCard(context, requests, index);
                   } //pandable to fill the screen
                   ),
             ],
@@ -213,20 +202,6 @@ class _HomeState extends State<Home> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           decoration: BoxDecoration(
-            /*gradient: isHovered
-                ? const LinearGradient(
-                    colors: [Colors.red, Colors.redAccent], // Hover effect
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : const LinearGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.white
-                    ], // Default colors (red to redAccent)
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),*/
             color: isHovered ? Colors.red : Colors.white,
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: [

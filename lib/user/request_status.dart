@@ -27,27 +27,7 @@ class RequestStatusPageState extends State<RequestStatusPage> with SingleTickerP
 
   @override
   Widget build(BuildContext context) {
-    void approve(index) {
-      setState(() {
-        approvedRequests.insert(0, requests[index]);
-        requests.remove(
-          requests[index],
-        );
-      });
-      print(approvedRequests[0].title);
-      Navigator.of(context).pop();
-    }
 
-    void decline(index) {
-      setState(() {
-        declinedRequests.insert(0, requests[index]);
-        requests.remove(
-          requests[index],
-        );
-      });
-      print(declinedRequests[0].title);
-      Navigator.of(context).pop();
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Requests"),

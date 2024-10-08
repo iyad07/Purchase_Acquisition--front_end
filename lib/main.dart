@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-//import 'user/home.dart';
-//import 'admin/home.dart';
+import 'package:form_acquistion/login.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -20,6 +18,7 @@ class MyAppState extends State<MyApp> {
     return  const MaterialApp(
       home: LoginPage(),
       debugShowCheckedModeBanner: false,
+      
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../request_handler.dart';
@@ -34,7 +35,11 @@ class RequestAdminPageState extends State<RequestAdminPage> with SingleTickerPro
           requests[index],
         );
       });
-      print(approvedRequests[0].title);
+      if (kDebugMode) {
+        if (kDebugMode) {
+          print(approvedRequests[0].title);
+        }
+      }
       Navigator.of(context).pop();
     }
 
@@ -45,7 +50,9 @@ class RequestAdminPageState extends State<RequestAdminPage> with SingleTickerPro
           requests[index],
         );
       });
-      print(declinedRequests[0].title);
+      if (kDebugMode) {
+        print(declinedRequests[0].title);
+      }
       Navigator.of(context).pop();
     }
     return Scaffold(
