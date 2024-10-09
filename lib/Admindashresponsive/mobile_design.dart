@@ -2,17 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_acquistion/menu.dart';
 import '../request_handler.dart';
-import 'request_history.dart';
-import 'pending_request.dart';
+import '../admin/pending_request.dart';
+import '../admin/request_history.dart';
 
-class AdminHome extends StatefulWidget {
-  const AdminHome({super.key});
+class MobileDesign extends StatefulWidget {
+  const MobileDesign({super.key});
 
   @override
-  State<AdminHome> createState() => _AdminHomeState();
+  State<MobileDesign> createState() => _MobileDesignState();
 }
 
-class _AdminHomeState extends State<AdminHome> {
+class _MobileDesignState extends State<MobileDesign> {
   @override
   Widget build(BuildContext context) {
     void updateRequests() {
