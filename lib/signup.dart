@@ -9,179 +9,154 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  Widget _buildTextField({
+    required String hintText,
+    required IconData icon,
+    bool isPassword = false,
+  }) {
+    return TextField(
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none,
+        ),
+        fillColor: Colors.redAccent.withOpacity(0.1),
+        filled: true,
+        prefixIcon: Icon(icon),
+      ),
+      obscureText: isPassword,
+    );
+  }
+
+  Widget _buildSignInButton() {
+    return SizedBox(
+      width: 500,
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: Colors.red,
+        ),
+        child: const Text(
+          "Sign up",
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoogleSignInButton() {
+    return Container(
+      height: 45,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.red),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
+      ),
+      child: TextButton(
+        onPressed: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/google.png',
+              height: 20,
+              width: 20,
+            ),
+            const SizedBox(width: 18),
+            const Text(
+              "Sign In with Google",
+              style: TextStyle(fontSize: 16, color: Colors.red),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Already have an account?"),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ),
+            );
+          },
+          child: const Text(
+            "Login",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  //const SizedBox(height: 60.0),
-                  Container(
-                    height: 100.0,
-                    width: 150.0,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/logo.png'),
-                          fit: BoxFit.cover),
-                      shape: BoxShape.circle,
-                    ),
+      body: Center(
+        child: SizedBox(
+          width: 500,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    height: 115,
+                    width: 150,
+                    fit: BoxFit.fitWidth,
                   ),
+                  const SizedBox(height: 5),
                   const Text(
                     "Sign up",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 5),
                   Text(
                     "Create your account",
                     style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                  )
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: "Username",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            borderSide: BorderSide.none),
-                        fillColor: Colors.redAccent.withOpacity(0.1),
-                        filled: true,
-                        prefixIcon: const Icon(Icons.person)),
                   ),
+                  const SizedBox(height: 30),
+                  _buildTextField(hintText: "Username", icon: Icons.person),
                   const SizedBox(height: 20),
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: "Email",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            borderSide: BorderSide.none),
-                        fillColor: Colors.redAccent.withOpacity(0.1),
-                        filled: true,
-                        prefixIcon: const Icon(Icons.email)),
-                  ),
+                  _buildTextField(hintText: "Email", icon: Icons.email),
                   const SizedBox(height: 20),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
-                      fillColor: Colors.redAccent.withOpacity(0.1),
-                      filled: true,
-                      prefixIcon: const Icon(Icons.password),
-                    ),
-                    obscureText: true,
-                  ),
+                  _buildTextField(
+                      hintText: "Password", icon: Icons.password, isPassword: true),
                   const SizedBox(height: 20),
-                  TextField(
-                    decoration: InputDecoration(
+                  _buildTextField(
                       hintText: "Confirm Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
-                      fillColor: Colors.redAccent.withOpacity(0.1),
-                      filled: true,
-                      prefixIcon: const Icon(Icons.password),
-                    ),
-                    obscureText: true,
-                  ),
+                      icon: Icons.password,
+                      isPassword: true),
+                  const SizedBox(height: 30),
+                  _buildSignInButton(),
+                  const SizedBox(height: 10),
+                  const Text("Or"),
+                  const SizedBox(height: 10),
+                  _buildGoogleSignInButton(),
+                  const SizedBox(height: 20),
+                  _buildLoginText(),
                 ],
               ),
-              Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )),
-              const Center(child: Text("Or")),
-              Container(
-                height: 45,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(
-                    color: Colors.red,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: const Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/login_signup/google.png'),
-                              fit: BoxFit.cover),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 18),
-                      const Text(
-                        "Sign In with Google",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text("Already have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return const LoginPage();
-                          },
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  )
-                ],
-              )
-            ],
+            ),
           ),
         ),
       ),

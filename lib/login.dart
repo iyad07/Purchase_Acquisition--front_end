@@ -83,56 +83,59 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _inputField(context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TextField(
-          controller: _emailController,
-          decoration: InputDecoration(
-              hintText: "Username",
+    return SizedBox(
+      width: 500,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TextField(
+            controller: _emailController,
+            decoration: InputDecoration(
+                hintText: "Username",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide.none),
+                fillColor: Colors.redAccent.withOpacity(0.1),
+                filled: true,
+                prefixIcon: const Icon(Icons.person)),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _passwordController,
+            decoration: InputDecoration(
+              hintText: "Password",
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none),
               fillColor: Colors.redAccent.withOpacity(0.1),
               filled: true,
-              prefixIcon: const Icon(Icons.person)),
-        ),
-        const SizedBox(height: 10),
-        TextField(
-          controller: _passwordController,
-          decoration: InputDecoration(
-            hintText: "Password",
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: BorderSide.none),
-            fillColor: Colors.redAccent.withOpacity(0.1),
-            filled: true,
-            prefixIcon: const Icon(Icons.password),
+              prefixIcon: const Icon(Icons.password),
+            ),
+            obscureText: true,
           ),
-          obscureText: true,
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () {
-            /*Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => const AdminHome(),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: 500,
+            child: ElevatedButton(
+              onPressed: () {
+                
+                _login();
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
+                backgroundColor: Colors.red,
               ),
-            );*/
-            _login();
-          },
-          style: ElevatedButton.styleFrom(
-            shape: const StadiumBorder(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: Colors.red,
-          ),
-          child: const Text(
-            "Login",
-            style: TextStyle(fontSize: 20,color:Colors.white ),
-
-          ),
-        )
-      ],
+              child: const Text(
+                "Login",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

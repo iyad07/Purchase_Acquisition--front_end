@@ -269,7 +269,7 @@ Widget documentdetailRow(
             Text(
               value,
             ),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
             ElevatedButton(
               onPressed: () {
                 previewFileByIndex(context, index, requestList);
