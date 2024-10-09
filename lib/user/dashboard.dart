@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:form_acquistion/dash_reposivedesigns/desktop_design.dart';
-import 'package:form_acquistion/dash_reposivedesigns/mobile_design.dart';
-import 'package:form_acquistion/dash_reposivedesigns/tablet_design.dart';
+import 'package:form_acquistion/user/dash_reposivedesigns/desktop_design.dart';
+import 'package:form_acquistion/user/dash_reposivedesigns/mobile_design.dart';
+import 'package:form_acquistion/user/dash_reposivedesigns/tablet_design.dart';
 import 'package:form_acquistion/responsive.dart';
 
 

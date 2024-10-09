@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_acquistion/menu.dart';
-import '../request_handler.dart';
-import '../admin/pending_request.dart';
-import '../admin/request_history.dart';
+import '../../request_handler.dart';
+import '../pending_request.dart';
+import '../request_history.dart';
 
 class DesktopDesign extends StatefulWidget {
   const DesktopDesign({super.key});

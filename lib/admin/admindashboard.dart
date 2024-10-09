@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:form_acquistion/Admindashresponsive/desktop_design.dart';
-import 'package:form_acquistion/Admindashresponsive/mobile_design.dart';
-import 'package:form_acquistion/Admindashresponsive/tablet_design.dart';
+import 'package:form_acquistion/admin/Admindashresponsive/desktop_design.dart';
+import 'package:form_acquistion/admin/Admindashresponsive/mobile_design.dart';
+import 'package:form_acquistion/admin/Admindashresponsive/tablet_design.dart';
 import 'package:form_acquistion/responsive.dart';
 
 class AdminHome extends StatefulWidget {

@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_acquistion/menu.dart';
-import '../request_handler.dart';
-import '../admin/pending_request.dart';
-import '../admin/request_history.dart';
+import '../../request_handler.dart';
+import '../pending_request.dart';
+import '../request_history.dart';
 
-class MobileDesign extends StatefulWidget {
-  const MobileDesign({super.key});
+class TabletDesign extends StatefulWidget {
+  const TabletDesign({super.key});
 
   @override
-  State<MobileDesign> createState() => _MobileDesignState();
+  State<TabletDesign> createState() => _TabletDesignState();
 }
 
-class _MobileDesignState extends State<MobileDesign> {
+class _TabletDesignState extends State<TabletDesign> {
   @override
   Widget build(BuildContext context) {
     void updateRequests() {
@@ -111,7 +111,7 @@ class _MobileDesignState extends State<MobileDesign> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: requestItems.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 4,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                   childAspectRatio: 1.5,
