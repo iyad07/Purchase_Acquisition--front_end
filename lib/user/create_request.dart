@@ -19,7 +19,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
         requestDescrip.text.isEmpty ||
         quantity.text.isEmpty ||
         deliveryPlace.text.isEmpty ||
-        deliveryDate.text.isEmpty ) {
+        deliveryDate.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please fill out all fields"),
@@ -118,7 +118,11 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['jpg', 'png', 'pdf'],  // Only accept specific file types
+        allowedExtensions: [
+          'jpg',
+          'png',
+          'pdf'
+        ], // Only accept specific file types
       );
 
       if (result != null) {
@@ -130,7 +134,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
 
           // Store the file info in the list (for web)
           setState(() {
-            document=FileManager(
+            document = FileManager(
               fileName: fileName,
               isPDF: isPDF,
               webFileBytes: webFileBytes,
@@ -141,7 +145,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
 
           // Store the file info in the list (for mobile/desktop)
           setState(() {
-            document=FileManager(
+            document = FileManager(
               fileName: fileName,
               isPDF: isPDF,
               pickedFile: pickedFile,
@@ -185,76 +189,90 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Create Request',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: double.maxFinite,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTextField("Request Title", requestTitle),
-                const SizedBox(height: 16),
-                _buildTextField("Request Description", requestDescrip),
-                const SizedBox(height: 16),
-                _buildTextField("Quantity", quantity),
-                const SizedBox(height: 16),
-                _builddropdown("Unit of Measurement"),
-                const SizedBox(height: 16),
-                _buildTextField("Delivery Place", deliveryPlace),
-                const SizedBox(height: 16),
-                _buildDatePicker("Delivery Date", deliveryDate,
-                    context), // Using Date Picker here
-                const SizedBox(height: 16),
-                TextButton.icon(
-                    onPressed: (){pickFile(context);},
-                    icon: const Icon(
-                      Icons.attach_file_sharp,
-                      color: Colors.red,
-                    ),
-                    label: const Text(
-                      "Attach Document",
-                      style: TextStyle(color: Colors.red),
-                    )),
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.red),
+      appBar: AppBar(),
+      body: SizedBox(
+        width: double.maxFinite,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 500,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 500,
+                        child:  Text(
+                          'Create Request',
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),
+                        ),
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: const StadiumBorder(),
-                        padding: const EdgeInsets.all(16),
-                      ),
-                      onPressed: () {
-                        addtoRequests(context);
-                      },
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                )
-              ],
+                      const SizedBox(height: 16),
+                      _buildTextField("Request Title", requestTitle),
+                      const SizedBox(height: 16),
+                      _buildTextField("Request Description", requestDescrip),
+                      const SizedBox(height: 16),
+                      _buildTextField("Quantity", quantity),
+                      const SizedBox(height: 16),
+                      _builddropdown("Unit of Measurement"),
+                      const SizedBox(height: 16),
+                      _buildTextField("Delivery Place", deliveryPlace),
+                      const SizedBox(height: 16),
+                      _buildDatePicker("Delivery Date", deliveryDate,
+                          context), // Using Date Picker here
+                      const SizedBox(height: 16),
+                      TextButton.icon(
+                          onPressed: () {
+                            pickFile(context);
+                          },
+                          icon: const Icon(
+                            Icons.attach_file_sharp,
+                            color: Colors.red,
+                          ),
+                          label: const Text(
+                            "Attach Document",
+                            style: TextStyle(color: Colors.red),
+                          )),
+                      const SizedBox(height: 32),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: const StadiumBorder(),
+                              padding: const EdgeInsets.all(16),
+                            ),
+                            onPressed: () {
+                              addtoRequests(context);
+                            },
+                            child: const Text(
+                              'Submit',
+                              style: TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -262,8 +280,3 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
 }
 
 //popups
-
-
-
-
-
