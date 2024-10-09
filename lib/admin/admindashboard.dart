@@ -14,9 +14,9 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayout(
-      mobileDesign: const MobileDesign(),
-      tabletDesign: const TabletDesign(),
-      desktopDesign: const DesktopDesign(),
+    return const ResponsiveLayout(
+      mobileDesign: MobileDesign(),
+      tabletDesign: TabletDesign(),
+      desktopDesign: DesktopDesign(),
     );}
 }

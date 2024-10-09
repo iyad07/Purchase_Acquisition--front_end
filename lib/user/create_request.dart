@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../request_handler.dart';
@@ -14,6 +16,7 @@ class CreateRequestPage extends StatefulWidget {
 
 class _CreateRequestPageState extends State<CreateRequestPage> {
   String? _selectedValue;
+
   void addtoRequests(BuildContext context) {
     if (requestTitle.text.isEmpty ||
         requestDescrip.text.isEmpty ||
@@ -26,19 +29,22 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
           backgroundColor: Colors.red,
         ),
       );
+      return; // Exit the function if fields are empty
     }
     setState(() {
       requests.insert(
-          0,
-          Requests(
-              title: requestTitle.text,
-              date: DateTime.now().toString(),
-              description: requestDescrip.text,
-              quantity: quantity.text,
-              unitOfMeasurement: _selectedValue.toString(),
-              deliveryPlace: deliveryPlace.text,
-              deliveryDate: deliveryDate.text,
-              document: document));
+        0,
+        Requests(
+          title: requestTitle.text,
+          date: DateTime.now().toString(),
+          description: requestDescrip.text,
+          quantity: quantity.text,
+          unitOfMeasurement: _selectedValue.toString(),
+          deliveryPlace: deliveryPlace.text,
+          deliveryDate: deliveryDate.text,
+          document: document,
+        ),
+      );
     });
     _clearInputFields();
     Navigator.of(context).pop();
@@ -52,7 +58,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     deliveryDate.clear();
   }
 
-  Widget _builddropdown(String label) {
+  Widget _buildDropdown(String label) {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         focusedBorder: const UnderlineInputBorder(
@@ -70,14 +76,12 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
         ),
         DropdownMenuItem(
           value: "meters",
-          child: Text(
-            "m",
-          ),
+          child: Text("m"),
         ),
         DropdownMenuItem(
           value: "milimeters",
           child: Text("mm"),
-        )
+        ),
       ],
       onChanged: (newValue) {
         setState(() {
@@ -114,7 +118,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     }
   }
 
-  Future<void> pickFile(context) async {
+  Future<void> pickFile(BuildContext context) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -164,7 +168,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     }
   }
 
-  _buildDatePicker(
+  Widget _buildDatePicker(
       String hintText, TextEditingController controller, BuildContext context) {
     return GestureDetector(
       onTap: () => _selectDate(context),
@@ -190,93 +194,101 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SizedBox(
-        width: double.maxFinite,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SingleChildScrollView(
-              child: SizedBox(
-                width: 500,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 500,
-                        child:  Text(
-                          'Create Request',
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildTextField("Request Title", requestTitle),
-                      const SizedBox(height: 16),
-                      _buildTextField("Request Description", requestDescrip),
-                      const SizedBox(height: 16),
-                      _buildTextField("Quantity", quantity),
-                      const SizedBox(height: 16),
-                      _builddropdown("Unit of Measurement"),
-                      const SizedBox(height: 16),
-                      _buildTextField("Delivery Place", deliveryPlace),
-                      const SizedBox(height: 16),
-                      _buildDatePicker("Delivery Date", deliveryDate,
-                          context), // Using Date Picker here
-                      const SizedBox(height: 16),
-                      TextButton.icon(
-                          onPressed: () {
-                            pickFile(context);
-                          },
-                          icon: const Icon(
-                            Icons.attach_file_sharp,
-                            color: Colors.red,
-                          ),
-                          label: const Text(
-                            "Attach Document",
-                            style: TextStyle(color: Colors.red),
-                          )),
-                      const SizedBox(height: 32),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SingleChildScrollView(
+                  child: SizedBox(
+                    width: constraints.maxWidth > 500
+                        ? 500
+                        : constraints.maxWidth, // Responsive width
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TextButton(
+                          SizedBox(
+                            width: constraints.maxWidth >500 ? 500 :constraints.maxWidth,
                             child: const Text(
-                              'Cancel',
+                              'Create Request',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField("Request Title", requestTitle),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                              "Request Description", requestDescrip),
+                          const SizedBox(height: 16),
+                          _buildTextField("Quantity", quantity),
+                          const SizedBox(height: 16),
+                          _buildDropdown("Unit of Measurement"),
+                          const SizedBox(height: 16),
+                          _buildTextField("Delivery Place", deliveryPlace),
+                          const SizedBox(height: 16),
+                          _buildDatePicker(
+                              "Delivery Date", deliveryDate, context),
+                          const SizedBox(height: 16),
+                          TextButton.icon(
+                            onPressed: () {
+                              pickFile(context);
+                            },
+                            icon: const Icon(
+                              Icons.attach_file_sharp,
+                              color: Colors.red,
+                            ),
+                            label: const Text(
+                              "Attach Document",
                               style: TextStyle(color: Colors.red),
                             ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
                           ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: const StadiumBorder(),
-                              padding: const EdgeInsets.all(16),
-                            ),
-                            onPressed: () {
-                              addtoRequests(context);
-                            },
-                            child: const Text(
-                              'Submit',
-                              style: TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                          const SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  shape: const StadiumBorder(),
+                                  padding: const EdgeInsets.all(16),
+                                ),
+                                onPressed: () {
+                                  addtoRequests(context);
+                                },
+                                child: const Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
-
-//popups

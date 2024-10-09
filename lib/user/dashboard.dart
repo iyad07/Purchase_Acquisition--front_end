@@ -15,10 +15,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayout(
-      mobileDesign: const MobileDesign(),
-      tabletDesign: const TabletDesign(),
-      desktopDesign: const DesktopDesign(),
+    return const ResponsiveLayout(
+      mobileDesign: MobileDesign(),
+      tabletDesign: TabletDesign(),
+      desktopDesign: DesktopDesign(),
     );
   }
 }

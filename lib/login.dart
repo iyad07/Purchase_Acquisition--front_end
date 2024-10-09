@@ -29,7 +29,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Administrator Login succesful')),
+        const SnackBar(content: Text('Administrator Login successful')),
       );
     } else {
       Navigator.of(context).push(
@@ -46,22 +46,30 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _header(context),
-            _inputField(context),
-            _forgotPassword(context),
-            _signup(context),
-          ],
+      body: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            double maxWidth = constraints.maxWidth > 500 ? 500 : constraints.maxWidth;
+            return Container(
+              margin: const EdgeInsets.all(24),
+              width: maxWidth,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _header(),
+                  _inputField(),
+                  _forgotPassword(),
+                  _signup(),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
-  _header(context) {
+  Widget _header() {
     return Column(
       children: [
         Container(
@@ -73,73 +81,69 @@ class LoginPageState extends State<LoginPage> {
             shape: BoxShape.rectangle,
           ),
         ),
+        const SizedBox(height: 10),
         const Text(
           "Welcome Back",
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
-        const Text("Enter your credential to login"),
+        const Text("Enter your credentials to login"),
       ],
     );
   }
 
-  _inputField(context) {
-    return SizedBox(
-      width: 500,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-                hintText: "Username",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide.none),
-                fillColor: Colors.redAccent.withOpacity(0.1),
-                filled: true,
-                prefixIcon: const Icon(Icons.person)),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(
-              hintText: "Password",
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide.none),
-              fillColor: Colors.redAccent.withOpacity(0.1),
-              filled: true,
-              prefixIcon: const Icon(Icons.password),
+  Widget _inputField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextField(
+          controller: _emailController,
+          decoration: InputDecoration(
+            hintText: "Username",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
             ),
-            obscureText: true,
+            fillColor: Colors.redAccent.withOpacity(0.1),
+            filled: true,
+            prefixIcon: const Icon(Icons.person),
           ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: 500,
-            child: ElevatedButton(
-              onPressed: () {
-                
-                _login();
-              },
-              style: ElevatedButton.styleFrom(
-                shape: const StadiumBorder(),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                ),
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Login",
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _passwordController,
+          decoration: InputDecoration(
+            hintText: "Password",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
             ),
-          )
-        ],
-      ),
+            fillColor: Colors.redAccent.withOpacity(0.1),
+            filled: true,
+            prefixIcon: const Icon(Icons.password),
+          ),
+          obscureText: true,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: _login,
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: Colors.red,
+            ),
+            child: const Text(
+              "Login",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  _forgotPassword(context) {
+  Widget _forgotPassword() {
     return TextButton(
       onPressed: () {},
       child: const Text(
@@ -149,21 +153,22 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  _signup(context) {
+  Widget _signup() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Dont have an account? "),
+        const Text("Don't have an account? "),
         TextButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const SignupPage(),
-              ));
-            },
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(color: Colors.red),
-            ))
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => const SignupPage(),
+            ));
+          },
+          child: const Text(
+            "Sign Up",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
       ],
     );
   }
